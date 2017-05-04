@@ -1,4 +1,5 @@
-elibrary(shiny)
+
+library(shiny)
 library(ggplot2)
 library(DT)
 load("movies.Rdata")
@@ -49,7 +50,7 @@ ui <- fluidPage(
       plotOutput(outputId = "scatterplot"),
 
       # Show data table -------------------------------------------------------
-      dataTableOutput(outputId = "moviestable")
+      dataTableOutput(outputId = "datatable")
     )
   )
 )
@@ -65,15 +66,17 @@ server <- function(input, output) {
   })
   
   # Print data table if checked -----------------------------------------------
-  output$moviestable <- DT::renderDataTable(
-    if(input$show_data){
-      DT::datatable(data = movies[, 1:7], 
-                    options = list(pageLength = 20), 
-                    rownames = FALSE)
-    }
+  output$datatable <- DT::renderDataTable(
+      if(input$show_data){
+        DT::datatable(
+                     data = movies[, 1:7], 
+                     options = list(pageLength = 20), 
+                     rownames = FALSE)
+      }
   )
 }
 
 # Run the application ---------------------------------------------------------
+
 shinyApp(ui = ui, server = server)
 
